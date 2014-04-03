@@ -13,12 +13,18 @@
     var jversion = $.fn.jquery.split('.'), jmajor = parseFloat(jversion[0]), jminor = parseFloat(jversion[1]);
     if (jmajor<2 && jminor<8) { // build the pseudo selector for jQuery < 1.8
         $.expr[':'].filterTableFind = function(a, i, m) { // build the case insensitive filtering functionality as a pseudo-selector expression
-            return $(a).text().toUpperCase().indexOf(m[3].toUpperCase())>=0;
+          t = $(el).text() + $.map($(el).find('input'), function(element) {
+            return $(element).val()
+          }).join(" ");
+          return t.toUpperCase().indexOf(m[3].toUpperCase())>=0;
         };
     } else { // build the pseudo selector for jQuery >= 1.8
         $.expr[':'].filterTableFind = jQuery.expr.createPseudo(function(arg) {
             return function(el) {
-                return $(el).text().toUpperCase().indexOf(arg.toUpperCase())>=0;
+              t = $(el).text() + $.map($(el).find('input'), function(element) {
+                return $(element).val()
+              }).join(" ");
+              return t.toUpperCase().indexOf(arg.toUpperCase())>=0;
             };
         });
     }
